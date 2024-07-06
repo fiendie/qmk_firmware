@@ -27,3 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define EE_HANDS
 
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_LED D5 // Specify an optional status LED by GPIO number which lights up when entering the bootloader
+
+#define LSPO_KEYS KC_LSFT, KC_LSFT, KC_8
+#define RSPC_KEYS KC_RSFT, KC_RSFT, KC_9
+
