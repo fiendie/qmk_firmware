@@ -16,9 +16,6 @@
 
 #include "quantum.h"
 
-#define EE_HANDS
-#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_LED D5 // Specify an optional status LED by GPIO number which lights up when entering the bootloader
-
 #ifdef OLED_ENABLE
 
 static void render_logo(void) {
