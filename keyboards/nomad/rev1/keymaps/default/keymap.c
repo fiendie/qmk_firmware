@@ -97,3 +97,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
+#ifdef OLED_ENABLE
+bool oled_task_user(void) {
+    // Host Keyboard Layer Status
+    oled_write_P(PSTR("Layer: "), false);
+
+    switch (get_highest_layer(layer_state)) {
+        case BASE:
+            oled_write_P(PSTR("Base\n"), false);
+            break;
+        case GERMAN:
+            oled_write_P(PSTR("German\n"), false);
+            break;
+        case MEDIA_FN:
+            oled_write_P(PSTR("Media/FN\n"), false);
+            break;
+        case KB_SETTINGS:
+            oled_write_P(PSTR("Settings\n"), false);
+            break;
+        default:
+            // Or use the write_ln shortcut over adding '\n' to the end of your string
+            oled_write_ln_P(PSTR("Undefined"), false);
+    }
+
+    return false;
+}
+#endif
+
