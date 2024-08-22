@@ -15,6 +15,7 @@
  */
 #include QMK_KEYBOARD_H
 #include "quantum/keymap_extras/keymap_german.h"
+#include "../../bitmaps.h"
 
 // Custom keycodes
 #define CC_TILD LOPT(KC_N)          // Tilde
@@ -98,26 +99,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 #ifdef OLED_ENABLE
+
 bool oled_task_user(void) {
     // Host Keyboard Layer Status
-    oled_write_P(PSTR("Layer: "), false);
 
     switch (get_highest_layer(layer_state)) {
         case BASE:
-            oled_write_P(PSTR("Base\n"), false);
+            oled_clear();
+            oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
+            oled_set_cursor(0, 10);
+            oled_write_raw_P(layer_indicator_1, sizeof(layer_indicator_1));
             break;
         case GERMAN:
-            oled_write_P(PSTR("German\n"), false);
+            oled_clear();
+            oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
+            oled_set_cursor(0, 10);
+            oled_write_raw_P(layer_indicator_2, sizeof(layer_indicator_2));
             break;
         case MEDIA_FN:
-            oled_write_P(PSTR("Media/FN\n"), false);
+            oled_clear();
+            oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
+            oled_set_cursor(0, 10);
+            oled_write_raw_P(layer_indicator_3, sizeof(layer_indicator_3));
             break;
         case KB_SETTINGS:
-            oled_write_P(PSTR("Settings\n"), false);
+            oled_clear();
+            oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
+            oled_set_cursor(0, 10);
+            oled_write_raw_P(layer_indicator_4, sizeof(layer_indicator_4));
             break;
         default:
-            // Or use the write_ln shortcut over adding '\n' to the end of your string
-            oled_write_ln_P(PSTR("Undefined"), false);
+            oled_clear();
+            oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
+            oled_set_cursor(0, 10);
+            oled_write_raw_P(layer_indicator_0, sizeof(layer_indicator_0));
     }
 
     return false;
