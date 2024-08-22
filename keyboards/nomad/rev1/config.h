@@ -19,5 +19,6 @@
 #define EE_HANDS
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500U // Timeout window in ms in which the double tap can occur.
 #define RGB_MATRIX_SLEEP                                // Turn off effects when suspended
-#define SPLIT_TRANSPORT_MIRROR                          // If LED_MATRIX_KEYPRESSES or LED_MATRIX_KEYRELEASES is enabled, you also will want to enable SPLIT_TRANSPORT_MIRROR
-#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 175               // limits maximum brightness of LEDs (max 255). Higher may cause the controller to crash.
+#define SPLIT_TRANSPORT_MIRROR
+#define SPLIT_LAYER_STATE_ENABLE
+#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 100               // limits maximum brightness of LEDs (max 255). Higher may cause the controller to crash.
