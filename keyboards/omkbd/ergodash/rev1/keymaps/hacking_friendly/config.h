@@ -31,3 +31,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define LSPO_KEYS KC_LSFT, KC_LSFT, KC_8
 #define RSPC_KEYS KC_RSFT, KC_RSFT, KC_9
 
+#define RGBLIGHT_SLEEP
+
