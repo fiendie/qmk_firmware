@@ -19,16 +19,15 @@
 #include "../../bitmaps.h"
 
 // Custom keycodes
-#define CC_TILD LOPT(KC_N)          // Tilde
-#define CC_EURO LOPT(KC_E)          // Euro symbol
-#define CC_BSLS LSFT(LOPT(KC_7))    // Backslash
-#define CC_PIPE LOPT(KC_7)          // Pipe symbol
-#define CC_SLSH LSFT(KC_7)          // Forward slash
-#define CC_LBRC LOPT(KC_8)          // Left curly brace
-#define CC_RBRC LOPT(KC_9)          // Right curly brace
-#define CC_RABR RSFT(KC_GRV)        // Right angle bracket
-#define CC_AT   LOPT(KC_L)          // @ symbol
-#define CC_LSBR LOPT(KC_5)          // Left square bracket
+#define CC_EURO ROPT(KC_E)          // Euro symbol
+#define CC_BSLS LSFT(ROPT(KC_7))    // Backslash
+#define CC_PIPE ROPT(DE_CIRC)       // Pipe symbol
+#define CC_PPDE ROPT(DE_LABK)       // Pipe symbol (Win)
+#define CC_LBRC ROPT(KC_8)          // Left curly brace
+#define CC_RBRC ROPT(KC_9)          // Right curly brace
+#define CC_RABR LSFT(DE_CIRC)       // Right angle bracket
+#define CC_AT   ROPT(KC_L)          // @ symbol
+#define CC_LSBR ROPT(KC_5)          // Left square bracket
 #define CC_RSBR LOPT(KC_6)          // Right square bracket
 #define CC_PGUP LGUI(KC_UP)         // Page up (macOS)
 #define CC_PGDN LGUI(KC_DOWN)       // Page down (macOS)
@@ -46,9 +45,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // ,--------+--------+--------+--------+--------+--------+--------.                      ,--------+--------+--------+--------+--------+--------+--------.
             KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,   KC_5,     KC_GRV,                         CC_RABR, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
         // +--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    CC_LBRC,                       CC_RBRC, DE_Z,    KC_U,    KC_I,    KC_O,    KC_P,    KC_UNDS,
+            KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,   DE_LCBR,                        DE_RCBR, DE_Z,    KC_U,    KC_I,    KC_O,    KC_P,    KC_UNDS,
         // +--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            KC_RPRN,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    CC_PIPE,                       DE_MINS, KC_H,    KC_J,    KC_K,    KC_L,    DE_PLUS, KC_BSLS,
+            KC_RPRN,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,   CC_PIPE,                        DE_MINS, KC_H,    KC_J,    KC_K,    KC_L,    DE_PLUS, KC_BSLS,
         // +--------+--------+--------+--------+--------+--------+--------+--------.    ,------- +--------+--------+--------+--------+--------+--------+--------|
             SC_LSPO,  DE_Y,    KC_X,    KC_C,    KC_V,    KC_B,             KC_DEL,      OSL(1),           KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_UP,   SC_RSPC,
         // +--------+--------+--------+--------+--------+--------+--------+--------+    +--------+--------+--------+--------+--------+--------+--------+--------|
@@ -58,13 +57,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [GERMAN] = LAYOUT(
         // ,--------+--------+--------+--------+--------+--------+--------.                      ,--------+--------+--------+--------+--------+--------+--------.
-            _______, _______, _______, _______, _______, _______, DE_LABK,                        DE_ACUT, _______, _______, _______, _______, _______, _______,
+            _______, _______, _______, _______, _______, _______, DE_LABK,                        DE_RABK, _______, CC_PPDE, _______, _______, _______, _______,
         // |--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            _______, _______, _______, CC_EURO, _______, _______, CC_LSBR,                        CC_RSBR, _______, DE_UDIA, _______, DE_ODIA, _______, _______,
+            _______, _______, _______, CC_EURO, _______, _______, DE_LBRC,                        DE_RBRC, _______, DE_UDIA, _______, DE_ODIA, _______, _______,
         // |--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            _______, DE_ADIA, DE_SS,   _______, _______, _______, CC_BSLS,                        CC_SLSH, _______, _______, _______, CC_AT,   _______, _______,
+            _______, DE_ADIA, DE_SS,   _______, _______, _______, DE_BSLS,                        DE_SLSH, _______, _______, _______, DE_AT,   _______, _______,
         // +--------+--------+--------+--------+--------+--------+--------+--------.    ,------- +--------+--------+--------+--------+--------+--------+--------|
-            _______, _______, _______, _______, _______, _______,          _______,      _______,          CC_TILD, _______, _______, _______, _______, _______,
+            _______, _______, _______, _______, _______, _______,          _______,      _______,          DE_TILD, _______, _______, _______, _______, _______,
         // |--------+--------+--------+--------+--------+--------+--------+--------+    +--------+--------+--------+--------+--------+--------+--------+--------|
             _______, _______, _______, _______, _______,                   _______,      _______,                   _______, _______, _______, _______, _______
         // `--------+--------+--------+--------+--------+--------+--------+--------'    `--------+--------+--------+--------+--------+--------+--------+--------'
