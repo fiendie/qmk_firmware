@@ -16,6 +16,7 @@
 
 #include QMK_KEYBOARD_H
 #include "quantum/keymap_extras/keymap_german.h"
+#include "suspend.h"
 #include "../../bitmaps.h"
 
 // Custom keycodes
@@ -100,39 +101,58 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef OLED_ENABLE
 
-bool oled_task_user(void) {
-    // Host Keyboard Layer Status
+void suspend_power_down_user(void) {
+    oled_off();
+}
 
-    switch (get_highest_layer(layer_state)) {
-        case BASE:
-            oled_clear();
-            oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
-            oled_set_cursor(0, 10);
-            oled_write_raw_P(layer_indicator_1, sizeof(layer_indicator_1));
-            break;
-        case GERMAN:
-            oled_clear();
-            oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
-            oled_set_cursor(0, 10);
-            oled_write_raw_P(layer_indicator_2, sizeof(layer_indicator_2));
-            break;
-        case MEDIA_FN:
-            oled_clear();
-            oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
-            oled_set_cursor(0, 10);
-            oled_write_raw_P(layer_indicator_3, sizeof(layer_indicator_3));
-            break;
-        case KB_SETTINGS:
-            oled_clear();
-            oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
-            oled_set_cursor(0, 10);
-            oled_write_raw_P(layer_indicator_4, sizeof(layer_indicator_4));
-            break;
-        default:
-            oled_clear();
-            oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
-            oled_set_cursor(0, 10);
-            oled_write_raw_P(layer_indicator_0, sizeof(layer_indicator_0));
+void suspend_wakeup_init_user(void) {
+    oled_on();
+}
+
+bool logo_rendered_master = false;
+bool logo_rendered_slave = false;
+int lastLayerState;
+
+bool oled_task_user(void) {
+    if (!logo_rendered_master && is_keyboard_master()) {
+        oled_clear();
+        oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
+        logo_rendered_master = true;
+    }
+    else if (!logo_rendered_slave && !is_keyboard_master()) {
+        oled_clear();
+        oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
+        logo_rendered_slave = true;
+    }
+
+    int currentLayerState = get_highest_layer(layer_state);
+
+    if (lastLayerState != currentLayerState) {
+        lastLayerState = currentLayerState;
+
+        if (is_keyboard_master()) {
+            switch (currentLayerState) {
+                case BASE:
+                    oled_set_cursor(0, 10);
+                    oled_write_raw_P(layer_indicator_1, sizeof(layer_indicator_1));
+                    break;
+                case GERMAN:
+                    oled_set_cursor(0, 10);
+                    oled_write_raw_P(layer_indicator_2, sizeof(layer_indicator_2));
+                    break;
+                case MEDIA_FN:
+                    oled_set_cursor(0, 10);
+                    oled_write_raw_P(layer_indicator_3, sizeof(layer_indicator_3));
+                    break;
+                case KB_SETTINGS:
+                    oled_set_cursor(0, 10);
+                    oled_write_raw_P(layer_indicator_4, sizeof(layer_indicator_4));
+                    break;
+                default:
+                    oled_set_cursor(0, 10);
+                    oled_write_raw_P(layer_indicator_0, sizeof(layer_indicator_0));
+            }
+        }
     }
 
     return false;
