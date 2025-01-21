@@ -17,6 +17,7 @@
 #include QMK_KEYBOARD_H
 #include "quantum/keymap_extras/keymap_german.h"
 #include "suspend.h"
+#include "gpio.h"
 #include "../../bitmaps.h"
 
 // Custom keycodes
@@ -98,6 +99,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // `--------+--------+--------+--------+--------+--------+--------+--------'    `--------+--------+--------+--------+--------+--------+--------+--------'
     )
 };
+
+// Disable Liatris power LED
+void keyboard_pre_init_user(void) {
+    gpio_set_pin_output(24);
+    gpio_write_pin_high(24);
+}
 
 #ifdef OLED_ENABLE
 
