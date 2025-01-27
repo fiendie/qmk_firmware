@@ -6,6 +6,12 @@
         "lto": true
     },
     "diode_direction": "COL2ROW",
+    "encoder": {
+        "enabled": true,
+        "rotary": [
+            { "pin_a": "GP12", "pin_b": "GP13" }
+        ]
+    },
     "features": {
         "bootmagic": true,
         "oled": true,
@@ -14,7 +20,7 @@
         "mousekey": true,
         "nkro": true
     },
-    "development_board": "promicro",
+    "development_board": "elite_c",
     "rgb_matrix": {
         "driver": "ws2812",
         "split_count": [34, 34],
@@ -120,7 +126,14 @@
     },
     "split": {
         "enabled": true,
-        "soft_serial_pin": "D2"
+        "soft_serial_pin": "D2",
+        "encoder": {
+            "right": {
+                "rotary": [
+                    {"pin_a": "GP12", "pin_b": "GP13"}
+                ]
+            }
+        }
     },
     "url": "https://github.com/fiendie/NomadKeyboard",
     "usb": {

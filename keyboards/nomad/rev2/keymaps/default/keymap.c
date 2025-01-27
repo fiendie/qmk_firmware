@@ -18,8 +18,6 @@
 #include "quantum/keymap_extras/keymap_german.h"
 #include "suspend.h"
 #include "gpio.h"
-#include "os_detection.h"
-
 #include "../../../bitmaps.h"
 
 // Custom keycodes
@@ -102,13 +100,47 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
-// Disable Liatris power LED
 void keyboard_pre_init_user(void) {
+    // Disable Liatris power LED
     gpio_set_pin_output(24);
     gpio_write_pin_high(24);
 }
 
-#ifdef OLED_ENABLE
+os_variant_t current_os = OS_MACOS;
+bool os_changed = true;
+
+bool process_detected_host_os_kb(os_variant_t detected_os) {
+    if (current_os != detected_os) {
+        current_os = detected_os;
+        os_changed = true;
+    }
+    else {
+        os_changed = false;
+    }
+
+    return true;
+}
+
+void render_current_os (void) {
+    if (!is_keyboard_master()) {
+        switch (current_os) {
+            case OS_WINDOWS:
+                oled_set_cursor(0, 10);
+                oled_write_raw_P(windows_icon, sizeof(windows_icon));
+                break;
+
+            case OS_MACOS:
+                oled_set_cursor(0, 10);
+                oled_write_raw_P(apple_icon, sizeof(apple_icon));
+                break;
+
+            default:
+                oled_set_cursor(0, 10);
+                oled_write_raw_P(apple_icon, sizeof(apple_icon));
+                break;
+        }
+    }
+}
 
 void suspend_power_down_user(void) {
     oled_off();
@@ -120,27 +152,14 @@ void suspend_wakeup_init_user(void) {
 
 bool logo_rendered_master = false;
 bool logo_rendered_slave = false;
-int lastLayerState;
+int last_layer_state = 1;
 
-bool oled_task_user(void) {
-    if (!logo_rendered_master && is_keyboard_master()) {
-        oled_clear();
-        oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
-        logo_rendered_master = true;
-    }
-    else if (!logo_rendered_slave && !is_keyboard_master()) {
-        oled_clear();
-        oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
-        logo_rendered_slave = true;
-    }
-
-    int currentLayerState = get_highest_layer(layer_state);
-
-    if (lastLayerState != currentLayerState) {
-        lastLayerState = currentLayerState;
+void render_layer_state (int current_layer_state) {
+    if (last_layer_state != current_layer_state) {
+        last_layer_state = current_layer_state;
 
         if (is_keyboard_master()) {
-            switch (currentLayerState) {
+            switch (current_layer_state) {
                 case BASE:
                     oled_set_cursor(0, 10);
                     oled_write_raw_P(layer_indicator_1, sizeof(layer_indicator_1));
@@ -163,8 +182,50 @@ bool oled_task_user(void) {
             }
         }
     }
+}
+
+bool oled_task_user(void) {
+    int current_layer_state = get_highest_layer(layer_state);
+
+    if (!logo_rendered_master && is_keyboard_master()) {
+        oled_clear();
+        oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
+
+        logo_rendered_master = true;
+    }
+    else if (!logo_rendered_slave && !is_keyboard_master()) {
+        oled_clear();
+        oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
+
+        logo_rendered_slave = true;
+
+    }
+
+    render_layer_state(current_layer_state);
+    render_current_os();
 
     return false;
 }
-#endif
+
+bool encoder_update_user(uint8_t index, bool clockwise) {
+    if (index == 0) {
+        // Volume control
+        if (clockwise) {
+            tap_code(KC_VOLD);
+        }
+        else {
+            tap_code(KC_VOLU);
+        }
+    }
+    else if (index == 1) {
+        // Page up/Page down
+        if (clockwise) {
+            tap_code(KC_PGDN);
+        }
+        else {
+            tap_code(KC_PGUP);
+        }
+    }
+    return false;
+}
 
