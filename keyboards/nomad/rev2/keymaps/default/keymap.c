@@ -19,6 +19,7 @@
 #include "suspend.h"
 #include "gpio.h"
 #include "../../../bitmaps.h"
+#include "ledmap.h"
 
 // Custom keycodes
 #define CC_EURO ROPT(KC_E)          // Euro symbol
@@ -33,6 +34,8 @@
 #define CC_RSBR LOPT(KC_6)          // Right square bracket
 #define CC_PGUP LGUI(KC_UP)         // Page up (macOS)
 #define CC_PGDN LGUI(KC_DOWN)       // Page down (macOS)
+
+extern rgb_config_t rgb_matrix_config;
 
 enum layers {
     BASE,
@@ -104,6 +107,10 @@ void keyboard_pre_init_user(void) {
     // Disable Liatris power LED
     gpio_set_pin_output(24);
     gpio_write_pin_high(24);
+}
+
+void keyboard_post_init_user(void) {
+    rgb_matrix_enable();
 }
 
 os_variant_t current_os = OS_MACOS;
@@ -227,5 +234,51 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         }
     }
     return false;
+}
+
+void set_layer_color(int layer) {
+    for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
+        HSV hsv = {
+            .h = pgm_read_byte(&ledmap[layer][i][0]),
+            .s = pgm_read_byte(&ledmap[layer][i][1]),
+            .v = pgm_read_byte(&ledmap[layer][i][2]),
+        };
+        if (!hsv.h && !hsv.s && !hsv.v) {
+            rgb_matrix_set_color(i, 0, 0, 0);
+        } else {
+            RGB rgb = hsv_to_rgb(hsv);
+            float brightness_factor = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
+            rgb_matrix_set_color(i,
+                brightness_factor * rgb.r,
+                brightness_factor * rgb.g,
+                brightness_factor * rgb.b
+            );
+        }
+    }
+}
+
+bool rgb_matrix_indicators_user(void) {
+    switch (biton32(layer_state)) {
+        case 0:
+            set_layer_color(0);
+            break;
+        case 1:
+            set_layer_color(1);
+            break;
+        case 2:
+            set_layer_color(2);
+            break;
+        case 3:
+            set_layer_color(3);
+            break;
+        default:
+            if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
+                rgb_matrix_set_color_all(0, 0, 0);
+            }
+
+            break;
+    }
+
+    return true;
 }
 
