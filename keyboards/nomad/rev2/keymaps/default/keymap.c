@@ -21,25 +21,44 @@
 #include "../../../bitmaps.h"
 #include "ledmap.h"
 
-// Custom keycodes
-#define CC_EURO ROPT(KC_E)          // Euro symbol
-#define CC_BSLS LSFT(ROPT(KC_7))    // Backslash
-#define CC_PIPE ROPT(DE_CIRC)       // Pipe symbol
-#define CC_PPDE ROPT(DE_LABK)       // Pipe symbol (Win)
-#define CC_LBRC ROPT(KC_8)          // Left curly brace
-#define CC_RBRC ROPT(KC_9)          // Right curly brace
-#define CC_RABR LSFT(DE_CIRC)       // Right angle bracket
-#define CC_AT   ROPT(KC_L)          // @ symbol
-#define CC_LSBR ROPT(KC_5)          // Left square bracket
-#define CC_RSBR LOPT(KC_6)          // Right square bracket
-#define CC_PGUP LGUI(KC_UP)         // Page up (macOS)
-#define CC_PGDN LGUI(KC_DOWN)       // Page down (macOS)
+#define EECONFIG_OS 0x20  // EEPROM address (choose a free one above 0x10)
 
 extern rgb_config_t rgb_matrix_config;
 
+typedef enum {
+    OS_MACOS = 0,
+    OS_WINDOWS = 1,
+    OS_LINUX = 2
+} os_type_t;
+
+enum custom_keycodes {
+    CC_EURO = SAFE_RANGE,
+    CC_BSLS,                // Backslash
+    CC_PIPE,
+    CC_LBRC,                // Left Curly Brace
+    CC_RBRC,                // Right Curly Brace
+    CC_LABR,                // Left Angle Bracket
+    CC_RABR,                // Right Angle Bracket
+    CC_AT,
+    CC_TILD,
+    CC_CIRC,                // Accent Circonflex
+    CC_DEGR,                // Degrees
+    CC_BTCK,                // Backtick
+    CC_LSBR,                // Left Bracket
+    CC_RSBR,                // Right Bracket
+    CC_PGUP,
+    CC_PGDN,
+    CC_OSWIN,
+    CC_OSLIN,
+    CC_OSMAC
+};
+
+static os_type_t current_os;
+static os_type_t last_rendered_os;
+
 enum layers {
     BASE,
-    GERMAN,
+    SYMBOL,
     MEDIA_FN,
     KB_SETTINGS
 };
@@ -48,9 +67,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [BASE] = LAYOUT(
         // ,--------+--------+--------+--------+--------+--------+--------.                      ,--------+--------+--------+--------+--------+--------+--------.
-            KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,   KC_5,     KC_GRV,                         CC_RABR, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
+            KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    CC_LABR,                        CC_RABR, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
         // +--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,   DE_LCBR,                        DE_RCBR, DE_Z,    KC_U,    KC_I,    KC_O,    KC_P,    KC_UNDS,
+            KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,   CC_LBRC,                        CC_RBRC, DE_Z,    KC_U,    KC_I,    KC_O,    KC_P,    KC_UNDS,
         // +--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
             KC_RPRN,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,   CC_PIPE,                        DE_MINS, KC_H,    KC_J,    KC_K,    KC_L,    DE_PLUS, KC_BSLS,
         // +--------+--------+--------+--------+--------+--------+--------+--------.    ,------- +--------+--------+--------+--------+--------+--------+--------|
@@ -60,15 +79,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // `--------+--------+--------+--------+--------+--------+--------+--------'    `--------+--------+--------+--------+--------+--------+--------+--------'
     ),
 
-    [GERMAN] = LAYOUT(
+    [SYMBOL] = LAYOUT(
         // ,--------+--------+--------+--------+--------+--------+--------.                      ,--------+--------+--------+--------+--------+--------+--------.
-            _______, _______, _______, _______, _______, _______, DE_LABK,                        DE_RABK, _______, CC_PPDE, _______, _______, _______, _______,
+            _______, _______, _______, _______, _______, _______, CC_CIRC,                        CC_DEGR, CC_BTCK, _______, _______, _______, _______, _______,
         // |--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            _______, _______, _______, CC_EURO, _______, _______, DE_LBRC,                        DE_RBRC, _______, DE_UDIA, _______, DE_ODIA, _______, _______,
+            _______, _______, _______, CC_EURO, _______, _______, CC_LSBR,                        CC_RSBR, _______, DE_UDIA, _______, DE_ODIA, _______, _______,
         // |--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            _______, DE_ADIA, DE_SS,   _______, _______, _______, DE_BSLS,                        DE_SLSH, _______, _______, _______, DE_AT,   _______, _______,
+            _______, DE_ADIA, DE_SS,   _______, _______, _______, CC_BSLS,                        DE_SLSH, _______, _______, _______, CC_AT,   _______, _______,
         // +--------+--------+--------+--------+--------+--------+--------+--------.    ,------- +--------+--------+--------+--------+--------+--------+--------|
-            _______, _______, _______, _______, _______, _______,          _______,      _______,          DE_TILD, _______, _______, _______, _______, _______,
+            _______, _______, _______, _______, _______, _______,          _______,      _______,          CC_TILD, _______, _______, _______, _______, _______,
         // |--------+--------+--------+--------+--------+--------+--------+--------+    +--------+--------+--------+--------+--------+--------+--------+--------|
             _______, _______, _______, _______, _______,                   _______,      _______,                   _______, _______, _______, _______, _______
         // `--------+--------+--------+--------+--------+--------+--------+--------'    `--------+--------+--------+--------+--------+--------+--------+--------'
@@ -90,15 +109,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [KB_SETTINGS] = LAYOUT(
         // ,--------+--------+--------+--------+--------+--------+--------.                      ,--------+--------+--------+--------+--------+--------+--------.
-            _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG,                        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+            _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG,                       CC_OSMAC, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
         // |--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_RMOD,                       RGB_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+            _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       CC_OSWIN, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         // |--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_SPD,                        RGB_SPI, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       CC_OSLIN, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         // +--------+--------+--------+--------+--------+--------+--------+--------.    ,------- +--------+--------+--------+--------+--------+--------+--------|
-            _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          RGB_HUI,      RGB_SAD,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+            _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,      XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         // |--------+--------+--------+--------+--------+--------+--------+--------+    +--------+--------+--------+--------+--------+--------+--------+--------|
-            _______, _______, XXXXXXX, XXXXXXX, RGB_VAD,                   RGB_HUD,      RGB_SAI,                   RGB_VAI, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+            _______, _______, XXXXXXX, XXXXXXX, RGB_VAD,                   XXXXXXX,      XXXXXXX,                   RGB_VAI, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
         // `--------+--------+--------+--------+--------+--------+--------+--------'    `--------+--------+--------+--------+--------+--------+--------+--------'
     )
 };
@@ -111,25 +130,157 @@ void keyboard_pre_init_user(void) {
 
 void keyboard_post_init_user(void) {
     rgb_matrix_enable();
+
+    uint8_t os_val = eeprom_read_byte((uint8_t*)EECONFIG_OS);
+
+    if (os_val > OS_LINUX) {  // sanity check
+        os_val = OS_MACOS;
+    }
+
+    current_os = (os_type_t)os_val;
+    last_rendered_os = 255;  // force refresh once
 }
 
-os_variant_t current_os = OS_MACOS;
-bool os_changed = true;
-
-bool process_detected_host_os_kb(os_variant_t detected_os) {
-    if (current_os != detected_os) {
-        current_os = detected_os;
-        os_changed = true;
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        switch (keycode) {
+            case CC_EURO:
+                tap_code16(ROPT(KC_E));
+                return false;
+            case CC_BSLS:
+                if (current_os == OS_MACOS) {
+                    tap_code16(LSFT(ROPT(KC_7)));
+                }
+                else {
+                    tap_code16(ROPT(KC_MINS));
+                }
+                return false;
+            case CC_PIPE:
+                if (current_os == OS_MACOS) {
+                    tap_code16(ROPT(KC_7));
+                }
+                else {
+                    tap_code16(ROPT(DE_LABK));
+                }
+                return false;
+            case CC_LBRC:
+                if (current_os == OS_MACOS) {
+                    tap_code16(ROPT(KC_8));
+                }
+                else {
+                    tap_code16(ROPT(KC_7));
+                }
+                return false;
+            case CC_RBRC:
+                if (current_os == OS_MACOS) {
+                    tap_code16(ROPT(KC_9));
+                }
+                else {
+                    tap_code16(ROPT(KC_0));
+                }
+                return false;
+            case CC_LABR:
+                if (current_os == OS_MACOS) {
+                    tap_code16(KC_GRV);
+                }
+                else {
+                    tap_code16(DE_LABK);
+                }
+                return false;
+            case CC_RABR:
+                if (current_os == OS_MACOS) {
+                    tap_code16(RSFT(KC_GRV));
+                }
+                else {
+                    tap_code16(DE_RABK);
+                }
+                return false;
+            case CC_AT:
+                if (current_os == OS_MACOS) {
+                    tap_code16(ROPT(KC_L));
+                }
+                else {
+                    tap_code16(ROPT(KC_Q));
+                }
+                return false;
+            case CC_TILD:
+                if (current_os == OS_MACOS) {
+                    tap_code16(ROPT(KC_N));
+                }
+                else {
+                    tap_code16(DE_TILD);
+                }
+                return false;
+            case CC_CIRC:
+                if (current_os == OS_MACOS) {
+                    tap_code16(KC_NUBS);
+                }
+                else {
+                    tap_code16(DE_CIRC);
+                }
+                return false;
+            case CC_DEGR:
+                if (current_os == OS_MACOS) {
+                    tap_code16(LSFT(KC_NUBS));
+                }
+                else {
+                    tap_code16(LSFT(DE_CIRC));
+                }
+                return false;
+            case CC_BTCK:
+                tap_code16(LSFT(KC_EQL));
+                return false;
+            case CC_LSBR:
+                if (current_os == OS_MACOS) {
+                    tap_code16(ROPT(KC_5));
+                }
+                else {
+                    tap_code16(ROPT(KC_8));
+                }
+                return false;
+            case CC_RSBR:
+                if (current_os == OS_MACOS) {
+                    tap_code16(ROPT(KC_6));
+                }
+                else {
+                    tap_code16(ROPT(KC_9));
+                }
+                return false;
+            case CC_PGUP:
+                if (current_os == OS_MACOS) {
+                    tap_code16(LGUI(KC_UP));
+                }
+                else {
+                    tap_code(KC_PGUP);
+                }
+                return false;
+            case CC_PGDN:
+                if (current_os == OS_MACOS) {
+                    tap_code16(LGUI(KC_DOWN));
+                }
+                else {
+                    tap_code(KC_PGDN);
+                }
+                return false;
+            case CC_OSWIN:
+                current_os = OS_WINDOWS;
+                eeprom_update_byte((uint8_t*)EECONFIG_OS, OS_WINDOWS);
+                return false;
+            case CC_OSMAC:
+                current_os = OS_MACOS;
+                eeprom_update_byte((uint8_t*)EECONFIG_OS, OS_MACOS);
+                return false;
+            case CC_OSLIN:
+                current_os = OS_LINUX;
+                eeprom_update_byte((uint8_t*)EECONFIG_OS, OS_LINUX);
+                return false;
+        }
     }
-    else {
-        os_changed = false;
-    }
-
     return true;
 }
 
 void render_current_os (void) {
-    if (!is_keyboard_master()) {
+    if (is_keyboard_master()) {
         switch (current_os) {
             case OS_WINDOWS:
                 oled_set_cursor(0, 10);
@@ -139,6 +290,11 @@ void render_current_os (void) {
             case OS_MACOS:
                 oled_set_cursor(0, 10);
                 oled_write_raw_P(apple_icon, sizeof(apple_icon));
+                break;
+
+            case OS_LINUX:
+                oled_set_cursor(0, 10);
+                oled_write_raw_P(linux_icon, sizeof(linux_icon));
                 break;
 
             default:
@@ -165,13 +321,13 @@ void render_layer_state (int current_layer_state) {
     if (last_layer_state != current_layer_state) {
         last_layer_state = current_layer_state;
 
-        if (is_keyboard_master()) {
+        if (!is_keyboard_master()) {
             switch (current_layer_state) {
                 case BASE:
                     oled_set_cursor(0, 10);
                     oled_write_raw_P(layer_indicator_1, sizeof(layer_indicator_1));
                     break;
-                case GERMAN:
+                case SYMBOL:
                     oled_set_cursor(0, 10);
                     oled_write_raw_P(layer_indicator_2, sizeof(layer_indicator_2));
                     break;
@@ -205,11 +361,14 @@ bool oled_task_user(void) {
         oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
 
         logo_rendered_slave = true;
-
     }
 
     render_layer_state(current_layer_state);
-    render_current_os();
+
+    if (current_os != last_rendered_os) {
+        render_current_os();
+        last_rendered_os = current_os;
+    }
 
     return false;
 }
@@ -243,11 +402,14 @@ void set_layer_color(int layer) {
             .s = pgm_read_byte(&ledmap[layer][i][1]),
             .v = pgm_read_byte(&ledmap[layer][i][2]),
         };
+
         if (!hsv.h && !hsv.s && !hsv.v) {
             rgb_matrix_set_color(i, 0, 0, 0);
-        } else {
+        }
+        else {
             RGB rgb = hsv_to_rgb(hsv);
             float brightness_factor = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
+
             rgb_matrix_set_color(i,
                 brightness_factor * rgb.r,
                 brightness_factor * rgb.g,
