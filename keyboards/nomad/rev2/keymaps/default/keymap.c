@@ -276,6 +276,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 return false;
         }
     }
+
     return true;
 }
 
@@ -306,10 +307,12 @@ void render_current_os (void) {
 }
 
 void suspend_power_down_user(void) {
+    rgb_matrix_disable_noeeprom();
     oled_off();
 }
 
 void suspend_wakeup_init_user(void) {
+    rgb_matrix_enable_noeeprom();
     oled_on();
 }
 
