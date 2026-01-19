@@ -22,7 +22,8 @@
 #define SPLIT_TRANSPORT_MIRROR
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_MODS_ENABLE
-#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 160               // limits maximum brightness of LEDs (max 255). Higher may cause the controller to crash.
+#define SPLIT_OLED_ENABLE
+#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 255
 #define BACKLIGHT_BREATHING
 
 // Define encoder pins
