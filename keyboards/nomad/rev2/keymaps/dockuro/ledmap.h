@@ -8,205 +8,147 @@
  *
  * Colors are encoded in HSV (Hue, Saturation, Value) format.
  *
- * Examples:
- *
- *  { 0,   255, 255 },  // Red
- *  { 20,  255, 255 },  // Orange
- *  { 40,  255, 255 },  // Yellow
- *  { 85,  255, 255 },  // Green
- *  { 120, 255, 255 },  // Cyan
- *  { 170, 255, 255 },  // Blue
- *  { 200, 255, 255 },  // Purple
- *  { 230, 255, 255 },  // Magenta
- *
+ * Available colors are:
+ * HSV_AZURE
+ * HSV_BLACK/HSV_OFF
+ * HSV_BLUE
+ * HSV_CHARTREUSE
+ * HSV_CORAL
+ * HSV_CYAN
+ * HSV_GOLD
+ * HSV_GOLDENROD
+ * HSV_GREEN
+ * HSV_MAGENTA
+ * HSV_ORANGE
+ * HSV_PINK
+ * HSV_PURPLE
+ * HSV_RED
+ * HSV_SPRINGGREEN
+ * HSV_TEAL
+ * HSV_TURQUOISE
+ * HSV_WHITE
+ * HSV_YELLOW
  */
+#include "color.h"
+
+#define _OFF_ { HSV_OFF }
+// symbol layer (green/yellow)
+#define ACCENTED { HSV_GREEN }
+#define MOVE { HSV_CHARTREUSE }
+#define SYMBOL { HSV_YELLOW }
+// media layer (blues)
+#define FUNC { HSV_CYAN }
+#define MOUSE { HSV_BLUE }
+#define NUMPAD { HSV_TURQUOISE }
+#define MEDIA { HSV_PURPLE }
+// settings layes (reds)
+#define FW { HSV_RED }
+#define LIGHT { HSV_PINK }
+#define RGB { HSV_MAGENTA }
+#define SLEEP { HSV_ORANGE }
+#define TOGGLE { HSV_ORANGE }
 
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
-    // Base Layer
+    // Symbol Layer
     [0] = {
         // Left half
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 230, 255, 255 }, { 230, 255, 255 }, { 230, 255, 255 }, { 85,  255, 255 }, { 85,  255, 255 }, // Column 1 (with thumbs)
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-                           { 120, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 230, 255, 255 }, // Column 2 (4 keys only)
-
-        // Row 1           Row 2              Row 3             Row 4             Row 5
-        { 230, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 85,  255, 255 }, // Column 3
-
-        // Row 5           Row 4              Row 3             Row 2             Row 1
-        { 85,  255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 230, 255, 255 }, // Column 4
-
-        // Row 1           Row 2              Row 3             Row 4             Row 5
-        { 230, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 20,  255, 255 }, // Column 5
-
-        // Row 5           Row 4              Row 3             Row 2             Row 1
-        { 20,  255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 230, 255, 255 }, // Column 6
-
-        // Row 1           Row 2              Row 3             Row 4             Row 5
-        { 85,  255, 255 }, { 85,  255, 255 }, { 230, 255, 255 }, { 85,  255, 255 }, { 85,  255, 255 }, // Column 7
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      _OFF_,      SYMBOL,     SYMBOL, // Column 1
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+                    SYMBOL,     _OFF_,      _OFF_,      _OFF_, // Column 2
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      _OFF_,      SYMBOL,     _OFF_, // Column 3
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        _OFF_,      SYMBOL,     _OFF_,      ACCENTED,   _OFF_, // Column 4
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      _OFF_,      SYMBOL,     _OFF_, // Column 5
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        _OFF_,      SYMBOL,     ACCENTED,   _OFF_,      _OFF_, // Column 6
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 7
 
         // Right half (mirrored)
-        // Row 1            Row 2             Row 3              Row 4              Row 5
-        { 230, 255, 255 }, { 230, 255, 255 }, { 230, 255, 255 }, { 20,  255, 255 }, { 85,  255, 255 }, // Column 1
-
-        // Row 5           Row 4              Row 3               Row 2             Row 1
-                           { 120, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 230, 255, 255 }, // Column 2
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 230, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 85,  255, 255 }, // Column 3
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 85,  255, 255 }, { 230, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 230, 255, 255 }, // Column 4
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 230, 255, 255 }, { 120, 255, 255 }, { 120, 255, 255 }, { 230, 255, 255 }, { 85,  255, 255 }, // Column 5
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 85,  255, 255 }, { 85,  255, 255 }, { 230, 255, 255 }, { 120, 255, 255 }, { 230, 255, 255 }, // Column 6
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 85,  255, 255 }, { 230, 255, 255 }, { 230, 255, 255 }, { 85,  255, 255 }, { 85,  255, 255 }  // Column 7
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 1
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+                    _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 2
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      ACCENTED,   _OFF_,      _OFF_,      _OFF_, // Column 3
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        _OFF_,      _OFF_,      _OFF_,      ACCENTED,   _OFF_, // Column 4
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      ACCENTED,   _OFF_,      _OFF_,      MOVE, // Column 5
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        MOVE,       MOVE,       _OFF_,      _OFF_,      _OFF_, // Column 6
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      _OFF_,      _OFF_,      MOVE // Column 7
     },
-
-    // Symbol Layer
+    // Media Layer
     [1] = {
         // Left half
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 1
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-                           { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 2
-
-        // Row 1           Row 2              Row 3             Row 4             Row 5
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 3
-
-        // Row 5           Row 4              Row 3             Row 2             Row 1
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 85,  255, 255 }, { 0,   0,   0   }, // Column 4
-
-        // Row 1           Row 2              Row 3             Row 4             Row 5
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 5
-
-        // Row 5           Row 4              Row 3             Row 2             Row 1
-        { 0,   0,   0   }, { 0,   0,   0   }, { 85,  255, 255 }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 6
-
-        // Row 1           Row 2              Row 3             Row 4             Row 5
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 7
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        FUNC,       _OFF_,      _OFF_,      MEDIA,      MEDIA, // Column 1
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+                    _OFF_,      _OFF_,      _OFF_,      FUNC, // Column 2
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        FUNC,       _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 3
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        _OFF_,      MOUSE,      MOUSE,      MOUSE,      FUNC, // Column 4
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        FUNC,       MOUSE,      MOUSE,      MOUSE,      _OFF_, // Column 5
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        _OFF_,      MOUSE,      MOUSE,      MOUSE,      FUNC, // Column 6
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 7
 
         // Right half (mirrored)
-        // Row 1            Row 2             Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 1
-
-        // Row 5           Row 4              Row 3               Row 2             Row 1
-                           { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 2
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 85,  255, 255 }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 3
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 85,  255, 255 }, { 0,   0,   0   }, // Column 4
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 85,  255, 255 }, { 0,   0,   0   }, { 0,   0,   0   }, { 40,  255, 255 }, // Column 5
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 40,  255, 255 }, { 40,  255, 255 }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 6
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 40,  255, 255 }  // Column 7
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        FUNC,       _OFF_,      _OFF_,      MEDIA,      MEDIA, // Column 1
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+                    _OFF_,      _OFF_,      _OFF_,      FUNC, // Column 2
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        FUNC,       _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 3
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        NUMPAD,     NUMPAD,     NUMPAD,     NUMPAD,     FUNC, // Column 4
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        FUNC,       NUMPAD,     NUMPAD,     NUMPAD,     NUMPAD, // Column 5
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        NUMPAD,     NUMPAD,     NUMPAD,     NUMPAD,     FUNC, // Column 6
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      NUMPAD,     NUMPAD,     NUMPAD,     NUMPAD  // Column 7
     },
-
-    // FN Layer
+    // Settings Layer
     [2] = {
         // Left half
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 120, 255, 255 }, { 0,   0,   0   }, { 0,   0,   0   }, { 200, 255, 255 }, { 200, 255, 255 }, // Column 1
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-                           { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 120, 255, 255 }, // Column 2
-
-        // Row 1           Row 2              Row 3              Row 4               Row 5
-        { 120, 255, 255 }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 3
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 0,   0,   0   }, { 170, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, { 120, 255, 255 }, // Column 4
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 120, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, { 0,   0,   0   }, // Column 5
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 0,   0,   0   }, { 170, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, { 120, 255, 255 }, // Column 6
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,  0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 7
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      _OFF_,      TOGGLE,     TOGGLE, // Column 1
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+                    _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 2
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 3
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        _OFF_,      _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 4
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 5
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        _OFF_,      FW,         FW,         FW,         _OFF_, // Column 6
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      FW,         _OFF_,      _OFF_, // Column 7
 
         // Right half (mirrored)
-        // Row 1            Row 2             Row 3              Row 4              Row 5
-        { 120, 255, 255 }, { 0,   0,   0   }, { 0,   0,   0   }, { 200, 255, 255 }, { 200, 255, 255 }, // Column 1
-
-        // Row 5           Row 4              Row 3               Row 2             Row 1
-                           { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 120, 255, 255 }, // Column 2
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 120, 255, 255 }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 3
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 170, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, { 120, 255, 255 }, // Column 4
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 120, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, // Column 5
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 170, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, { 120, 255, 255 }, // Column 6
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 170, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }, { 170, 255, 255 }  // Column 7
-    },
-
-    // Settings Layer
-    [3] = {
-        // Left half
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 1
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-                           { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 2
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 3
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 4
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 5
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 0,   0,   0   }, { 0,   255, 255 }, { 0,   255, 255 }, { 0,   255, 255 }, { 0,   0,   0   }, // Column 6
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   255, 255 }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 7
-
-        // Right half (mirrored)
-        // Row 1            Row 2             Row 3              Row 4              Row 5
-        { 40,  255, 255 }, { 40,  255, 255 }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 1
-
-        // Row 5           Row 4              Row 3               Row 2             Row 1
-                           { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 2
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 230, 255, 255 }, { 230, 255, 255 }, { 230, 255, 255 }, { 230, 255, 255 }, { 230, 255, 255 }, // Column 3
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 230, 255, 255 }, { 230, 255, 255 }, { 230, 255, 255 }, { 230, 255, 255 }, { 0,   0,   0   }, // Column 4
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 5
-
-        // Row 5           Row 4              Row 3              Row 2              Row 1
-        { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }, // Column 6
-
-        // Row 1           Row 2              Row 3              Row 4              Row 5
-        { 0,   0,   0   }, { 20,  255, 255 }, { 0,   0,   0   }, { 0,   0,   0   }, { 0,   0,   0   }  // Column 7
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        LIGHT,      LIGHT,      _OFF_,      _OFF_,      _OFF_, // Column 1
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+                    _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 2
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        RGB,        RGB,        RGB,        RGB,        RGB, // Column 3
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        RGB,        RGB,        RGB,        RGB,        _OFF_, // Column 4
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 5
+        // Row 5    Row 4       Row 3       Row 2       Row 1
+        _OFF_,      _OFF_,      _OFF_,      _OFF_,      _OFF_, // Column 6
+        // Row 1    Row 2       Row 3       Row 4       Row 5
+        _OFF_,      SLEEP,      _OFF_,      _OFF_,      _OFF_  // Column 7
     }
 };

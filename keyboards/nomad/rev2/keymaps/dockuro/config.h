@@ -13,10 +13,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#pragma once
 
 // space cadet shifts
 #define LSPO_KEYS KC_LSFT, KC_LSFT, KC_8
 #define RSPC_KEYS KC_RSFT, KC_RSFT, KC_9
 
+// caps words
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+#define CAPS_WORD_INVERT_ON_SHIFT
+
+// auto shift
+#define AUTO_SHIFT_TIMEOUT 190
+#define AUTO_SHIFT_NO_AUTO_REPEAT
+#define AUTO_SHIFT_MODIFIERS
+
 // quadratic speed mouse
-#define MK_KINETIC_SPEED
+#define MOUSEKEY_INERTIA
+
+/*// tap dance
+#define TAPPING_TERM 200
+#define TAPPING_TERM_PER_KEY
+#define HOLD_ON_OTHER_KEY_PRESS
+*/

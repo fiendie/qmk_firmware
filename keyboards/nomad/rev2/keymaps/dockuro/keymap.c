@@ -14,6 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define MY_SBRO ALGR(KC_LBRC)
+#define MY_SBRC ALGR(KC_RBRC)
+#define MY_CBRO RSA(KC_LBRC)
+#define MY_CBRC RSA(KC_RBRC)
+#define MY_AT ALGR(KC_SCLN)
+#define MY_HASH ALGR(KC_QUOT)
+
 #include QMK_KEYBOARD_H
 #include "suspend.h"
 #include "gpio.h"
@@ -24,18 +31,35 @@ extern rgb_config_t rgb_matrix_config;
 
 enum layers {
     BASE,
-    SYMBOL,
+    SYMBOLS,
     MEDIA_FN,
     KB_SETTINGS
 };
+
+/*
+enum {
+    LGUI_LBRC,
+    LALT_LCBR,
+    SPC_ENT,
+    CT_CLN
+};
+
+// Tap Dance definitions
+tap_dance_action_t tap_dance_actions[] = {
+    [LGUI_LBRC] = ACTION_TAP_DANCE_DOUBLE(KC_LGUI, ALGR(KC_LBRC)),
+    [LALT_LCBR] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, RSA(KC_LBRC)),
+    [SPC_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_SPC, KC_ENT),
+    [CT_CLN] = ACTION_TAP_DANCE_TAP_HOLD(KC_COLN, KC_SCLN),
+};
+*/
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [BASE] = LAYOUT(
         // ,--------+--------+--------+--------+--------+--------+--------.                      ,--------+--------+--------+--------+--------+--------+--------.
-            QK_GESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_MINS,                        KC_EQL,  KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
+            QK_GESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    MY_SBRO,                        MY_SBRC, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
         // +--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_LBRC,                        KC_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_QUOT,
+            KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    MY_CBRO,                        MY_CBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_QUOT,
         // +--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
             KC_NUBS,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_HOME,                        KC_END,  KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_SLSH,
         // +--------+--------+--------+--------+--------+--------+--------+--------.    ,------- +--------+--------+--------+--------+--------+--------+--------|
@@ -45,17 +69,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // `--------+--------+--------+--------+--------+--------+--------+--------'    `--------+--------+--------+--------+--------+--------+--------+--------'
     ),
 
-    [SYMBOL] = LAYOUT( // greens
+    [SYMBOLS] = LAYOUT( // greens
         // ,--------+--------+--------+--------+--------+--------+--------.                      ,--------+--------+--------+--------+--------+--------+--------.
             _______, _______, _______, _______, _______, _______, _______,                        _______, _______, _______, _______, _______, _______, _______,
         // |--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
             _______, _______, _______, KC_LBRC, _______, _______, _______,                        _______, _______, KC_BSLS, KC_EQL,  KC_SCLN, _______, _______,
         // |--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            XXXXXXX, KC_QUOT, _______, _______, _______, _______, _______,                        _______, _______, _______, _______, _______,   _______, _______,
+            XXXXXXX, KC_QUOT, _______, _______, KC_TILD, KC_NUHS, _______,                        _______, _______, _______, _______, _______, _______, _______,
         // +--------+--------+--------+--------+--------+--------+--------+--------.    ,------- +--------+--------+--------+--------+--------+--------+--------|
-            _______, _______, _______, _______, _______, _______,          _______,      _______,          _______, _______, _______, _______, KC_PGUP, _______,
+            _______, MY_AT,   MY_HASH,S(KC_EQL),KC_RBRC, KC_MINS,         S(KC_BSLS),     _______,          _______,_______, _______, _______, KC_PGUP, _______,
         // |--------+--------+--------+--------+--------+--------+--------+--------+    +--------+--------+--------+--------+--------+--------+--------+--------|
-            _______, XXXXXXX, XXXXXXX, _______, _______,                   _______,      _______,                   _______, _______, KC_HOME, KC_PGDN, KC_END
+            _______, XXXXXXX, XXXXXXX, _______, _______,                  S(KC_SCLN),     _______,                  _______, _______, KC_HOME, KC_PGDN, KC_END
         // `--------+--------+--------+--------+--------+--------+--------+--------'    `--------+--------+--------+--------+--------+--------+--------+--------'
     ),
 
@@ -69,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // +--------+--------+--------+--------+--------+--------+--------+--------.    ,------- +--------+--------+--------+--------+--------+--------+--------|
             _______, MS_WHLL, MS_BTN3, MS_WHLR, XXXXXXX, XXXXXXX,          KC_MUTE,      KC_MPRV,          XXXXXXX, XXXXXXX, KC_P1,   KC_P2,   KC_P3,   KC_PMNS,
         // |--------+--------+--------+--------+--------+--------+--------+--------+    +--------+--------+--------+--------+--------+--------+--------+--------|
-            _______, XXXXXXX, _______, XXXXXXX, XXXXXXX,                   KC_MPLY,      KC_MNXT,                   XXXXXXX, KC_P0,   KC_PDOT, KC_PENT, KC_PPLS
+            _______, XXXXXXX, _______, _______, _______,                   KC_MPLY,      KC_MNXT,                   XXXXXXX, KC_P0,   KC_PDOT, KC_PENT, KC_PPLS
         // `--------+--------+--------+--------+--------+--------+--------+--------+    +--------+--------+--------+--------+--------+--------+--------+--------'
     ),
 
@@ -79,20 +103,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // |--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
             _______, QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                        KC_BRID, XXXXXXX, RM_PREV, RM_NEXT, XXXXXXX, XXXXXXX, KC_SLEP,
         // |--------+--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------+--------|
-            EE_CLR,  QK_RBT,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                        XXXXXXX, XXXXXXX, RM_HUED, RM_HUEU, XXXXXXX, XXXXXXX, XXXXXXX,
+            EE_CLR,  QK_RBT,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                        XXXXXXX, XXXXXXX, RM_HUED, RM_HUEU, XXXXXXX, XXXXXXX, KC_WAKE,
         // +--------+--------+--------+--------+--------+--------+--------+--------.    ,------- +--------+--------+--------+--------+--------+--------+--------|
-            _______, DB_TOGG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,      XXXXXXX,          XXXXXXX, RM_SATD, RM_SATU, XXXXXXX, XXXXXXX, XXXXXXX,
+            _______, DB_TOGG, XXXXXXX, XXXXXXX, KC_WHOM, XXXXXXX,          GU_TOGG,      XXXXXXX,          XXXXXXX, RM_SATD, RM_SATU, XXXXXXX, XXXXXXX, _______,
         // |--------+--------+--------+--------+--------+--------+--------+--------+    +--------+--------+--------+--------+--------+--------+--------+--------|
-            _______, _______, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX,      XXXXXXX,                   RM_VALD, RM_VALU, XXXXXXX, XXXXXXX, XXXXXXX
+            _______, _______, XXXXXXX, _______, KC_MYCM,                   AS_TOGG,      XXXXXXX,                   RM_VALD, RM_VALU, XXXXXXX, XXXXXXX, XXXXXXX
         // `--------+--------+--------+--------+--------+--------+--------+--------'    `--------+--------+--------+--------+--------+--------+--------+--------'
     )
 };
 
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [0] = { ENCODER_CCW_CW(MS_WHLD, MS_WHLU),  ENCODER_CCW_CW(KC_VOLD, KC_VOLU)  },
-    [1] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT),  ENCODER_CCW_CW(KC_RIGHT, KC_LEFT) },
-    [2] = { ENCODER_CCW_CW(UG_VALD, UG_VALU),  ENCODER_CCW_CW(UG_SPDD, UG_SPDU)  },
-    [3] = { ENCODER_CCW_CW(UG_HUED, UG_HUEU),  ENCODER_CCW_CW(UG_SATD, UG_SATU)  },
+    [BASE] =        { ENCODER_CCW_CW(MS_WHLD, MS_WHLU),  ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [SYMBOLS] =     { ENCODER_CCW_CW(KC_RIGHT, KC_LEFT), ENCODER_CCW_CW(KC_UP, KC_DOWN)   },
+    [MEDIA_FN] =    { ENCODER_CCW_CW(_______, _______),  ENCODER_CCW_CW(MS_WHLL, MS_WHLR) },
+    [KB_SETTINGS] = { ENCODER_CCW_CW(RM_SPDU, RM_SPDD),  ENCODER_CCW_CW(RM_VALD, RM_VALU) },
 };
 
 void keyboard_pre_init_user(void) {
@@ -116,26 +140,21 @@ void render_logo (void) {
 }
 
 void render_layer_state (void) {
-    switch (get_highest_layer(layer_state)) {
-        case BASE:
-            oled_set_cursor(0, 10);
+    oled_set_cursor(0, 10);
+    int state = get_highest_layer(layer_state);
+    switch (state) {
+        case 0:
             oled_write_raw_P(base_layer, sizeof(base_layer));
             break;
-        case SYMBOL:
-            oled_set_cursor(0, 10);
+        case 1:
             oled_write_raw_P(symbols_layer, sizeof(symbols_layer));
             break;
-        case MEDIA_FN:
-            oled_set_cursor(0, 10);
+        case 2:
             oled_write_raw_P(media_layer, sizeof(media_layer));
             break;
-        case KB_SETTINGS:
-            oled_set_cursor(0, 10);
+        case 3:
             oled_write_raw_P(settings_layer, sizeof(settings_layer));
             break;
-        default:
-            oled_set_cursor(0, 10);
-            oled_write_raw_P(layer_indicator_0, sizeof(layer_indicator_0));
     }
 }
 
@@ -161,17 +180,11 @@ bool oled_task_user(void) {
 
 void oled_render_boot(bool bootloader) {
     oled_clear();
-    if (bootloader) {
-        oled_write_raw_P(skull, sizeof(skull));
-        oled_set_cursor(0, 4);
-        oled_write_raw_P(skull, sizeof(skull));
-        oled_set_cursor(0, 8);
-        oled_write_raw_P(skull, sizeof(skull));
-        oled_set_cursor(0, 12);
-        oled_write_raw_P(skull, sizeof(skull));
-    } else {
-        for (int i = 0; i < 16; i++) {
-            oled_set_cursor(0, i);
+    for (int i = 0; i < 16; i+=4) {
+        oled_set_cursor(0, i);
+        if (bootloader) {
+            oled_write_raw_P(skull, sizeof(skull));
+        } else {
             oled_write_P(PSTR("Rebooting "), false);
         }
     }
@@ -191,46 +204,27 @@ bool shutdown_user(bool jump_to_bootloader) {
 void set_layer_color(int layer) {
     for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
         HSV hsv = {
-            .h = pgm_read_byte(&ledmap[layer][i][0]),
-            .s = pgm_read_byte(&ledmap[layer][i][1]),
-            .v = pgm_read_byte(&ledmap[layer][i][2]),
+            .h = pgm_read_byte(&ledmap[layer-1][i][0]),
+            .s = pgm_read_byte(&ledmap[layer-1][i][1]),
+            .v = pgm_read_byte(&ledmap[layer-1][i][2]),
         };
 
         if (!hsv.h && !hsv.s && !hsv.v) {
             rgb_matrix_set_color(i, 0, 0, 0);
         }
         else {
-            RGB rgb = hsv_to_rgb(hsv);
-            float brightness_factor = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-
-            rgb_matrix_set_color(i,
-                brightness_factor * rgb.r,
-                brightness_factor * rgb.g,
-                brightness_factor * rgb.b
-            );
+            rgb_t rgb = hsv_to_rgb(hsv);
+            rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
         }
     }
 }
 
 bool rgb_matrix_indicators_user(void) {
-    switch (biton32(layer_state)) {
-        case 0:
-            rgb_matrix_enable();
-            break;
-        case 1:
-            set_layer_color(1);
-            break;
-        case 2:
-            set_layer_color(2);
-            break;
-        case 3:
-            set_layer_color(3);
-            break;
-        default:
-            if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
-                rgb_matrix_set_color_all(0, 0, 0);
-            }
-            break;
+    int state = biton32(layer_state);
+    if (state == 0) {
+        rgb_matrix_enable();
+    } else {
+        set_layer_color(state);
     }
     return true;
 }
@@ -238,3 +232,93 @@ bool rgb_matrix_indicators_user(void) {
 void keyboard_post_init_user(void) {
     rgb_matrix_enable();
 }
+
+// necessary with layouts differents from en_US as the keys are different
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        case KC_A ... KC_Z:
+        case KC_SLSH:
+            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+            return true;
+
+        // Keycodes that continue Caps Word, without shifting.
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+        case KC_UNDS:
+            return true;
+
+        default:
+            return false;  // Deactivate Caps Word.
+    }
+}
+
+/*
+#pragma region TapDance
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    uint8_t mod = mod_config(QK_MOD_TAP_GET_MODS(keycode));
+    if (mod) {
+        return TAPPING_TERM;
+    }
+    return 0;
+}
+
+typedef struct {
+    uint16_t tap;
+    uint16_t hold;
+    uint16_t held;
+} tap_dance_tap_hold_t;
+
+void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (state->pressed) {
+        if (state->count == 1
+#ifndef PERMISSIVE_HOLD
+            && !state->interrupted
+#endif
+        ) {
+            register_code16(tap_hold->hold);
+            tap_hold->held = tap_hold->hold;
+        } else {
+            register_code16(tap_hold->tap);
+            tap_hold->held = tap_hold->tap;
+        }
+    }
+}
+
+void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (tap_hold->held) {
+        unregister_code16(tap_hold->held);
+        tap_hold->held = 0;
+    }
+}
+
+#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold)                                        \
+    {                                                                               \
+        .fn        = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, \
+        .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}),               \
+    }
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    tap_dance_action_t *action;
+    tap_dance_state_t* state;
+
+    switch (keycode) {
+        case TD(CT_CLN):
+            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
+            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
+            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
+                tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+                tap_code16(tap_hold->tap);
+            }
+    }
+    return true;
+}
+
+#pragma endregion
+*/
