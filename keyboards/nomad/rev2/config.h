@@ -24,7 +24,6 @@
 #define SPLIT_MODS_ENABLE
 #define SPLIT_OLED_ENABLE
 #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 160
-#define BACKLIGHT_BREATHING
 
 // Define encoder pins
 #ifndef GP12
