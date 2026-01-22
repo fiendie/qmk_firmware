@@ -27,6 +27,7 @@
 #define AUTO_SHIFT_TIMEOUT 190
 #define AUTO_SHIFT_NO_AUTO_REPEAT
 #define AUTO_SHIFT_MODIFIERS
+#define PERMISSIVE_HOLD
 
 // quadratic speed mouse
 #define MOUSEKEY_INERTIA

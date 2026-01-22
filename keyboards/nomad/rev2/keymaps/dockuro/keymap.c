@@ -107,7 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // +--------+--------+--------+--------+--------+--------+--------+--------.    ,------- +--------+--------+--------+--------+--------+--------+--------|
             _______, DB_TOGG, XXXXXXX, XXXXXXX, KC_WHOM, XXXXXXX,          GU_TOGG,      XXXXXXX,          XXXXXXX, RM_SATD, RM_SATU, XXXXXXX, XXXXXXX, _______,
         // |--------+--------+--------+--------+--------+--------+--------+--------+    +--------+--------+--------+--------+--------+--------+--------+--------|
-            _______, _______, XXXXXXX, _______, KC_MYCM,                   AS_TOGG,      XXXXXXX,                   RM_VALD, RM_VALU, XXXXXXX, XXXXXXX, XXXXXXX
+            _______, _______, XXXXXXX, _______, KC_MYCM,                    AS_ON,        AS_OFF,                   RM_VALD, RM_VALU, XXXXXXX, XXXXXXX, XXXXXXX
         // `--------+--------+--------+--------+--------+--------+--------+--------'    `--------+--------+--------+--------+--------+--------+--------+--------'
     )
 };
@@ -139,20 +139,30 @@ void render_logo (void) {
     oled_write_raw_P(nomad_logo, sizeof(nomad_logo));
 }
 
+void render_leds (void) {
+#ifdef AUTO_SHIFT_ENABLE
+    oled_set_cursor(0, 6);
+    if (get_autoshift_state()) {
+        oled_write_P(PSTR("AS ON "), false);
+    } else {
+        oled_write_P(PSTR("AS OFF "), false);
+    }
+#endif
+}
+
 void render_layer_state (void) {
     oled_set_cursor(0, 10);
-    int state = get_highest_layer(layer_state);
-    switch (state) {
-        case 0:
+    switch (get_highest_layer(layer_state)) {
+        case BASE:
             oled_write_raw_P(base_layer, sizeof(base_layer));
             break;
-        case 1:
+        case SYMBOLS:
             oled_write_raw_P(symbols_layer, sizeof(symbols_layer));
             break;
-        case 2:
+        case MEDIA_FN:
             oled_write_raw_P(media_layer, sizeof(media_layer));
             break;
-        case 3:
+        case KB_SETTINGS:
             oled_write_raw_P(settings_layer, sizeof(settings_layer));
             break;
     }
@@ -171,8 +181,8 @@ bool oled_task_user(void) {
     if (is_keyboard_master()) {
         render_kuro_logo();
     } else {
+        render_leds();
         render_layer_state();
-        oled_scroll_left();
     }
 
     return false;
