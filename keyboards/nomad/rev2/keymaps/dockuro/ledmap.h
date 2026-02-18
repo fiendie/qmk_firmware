@@ -34,7 +34,7 @@
 #define _OFF_ { HSV_OFF }
 // symbol layer (green/yellow)
 #define ACCENTED { HSV_GREEN }
-#define MOVE { HSV_CHARTREUSE }
+#define ARROW { HSV_CHARTREUSE }
 #define SYMBOL { HSV_YELLOW }
 // media layer (blues)
 #define FUNC { HSV_CYAN }
@@ -57,9 +57,9 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
         // Row 5    Row 4       Row 3       Row 2       Row 1
                     SYMBOL,     _OFF_,      _OFF_,      _OFF_, // Column 2
         // Row 1    Row 2       Row 3       Row 4       Row 5
-        _OFF_,      _OFF_,      _OFF_,      SYMBOL,     _OFF_, // Column 3
+        _OFF_,      _OFF_,      _OFF_,      SYMBOL,     SYMBOL, // Column 3
         // Row 5    Row 4       Row 3       Row 2       Row 1
-        _OFF_,      SYMBOL,     _OFF_,      ACCENTED,   _OFF_, // Column 4
+        _OFF_,      SYMBOL,     SYMBOL,     ACCENTED,   _OFF_, // Column 4
         // Row 1    Row 2       Row 3       Row 4       Row 5
         _OFF_,      _OFF_,      _OFF_,      SYMBOL,     _OFF_, // Column 5
         // Row 5    Row 4       Row 3       Row 2       Row 1
@@ -77,11 +77,11 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
         // Row 5    Row 4       Row 3       Row 2       Row 1
         _OFF_,      _OFF_,      _OFF_,      ACCENTED,   _OFF_, // Column 4
         // Row 1    Row 2       Row 3       Row 4       Row 5
-        _OFF_,      ACCENTED,   _OFF_,      _OFF_,      MOVE, // Column 5
+        _OFF_,      ACCENTED,   _OFF_,      _OFF_,      ARROW, // Column 5
         // Row 5    Row 4       Row 3       Row 2       Row 1
-        MOVE,       MOVE,       _OFF_,      _OFF_,      _OFF_, // Column 6
+        ARROW,      ARROW,      _OFF_,      _OFF_,      _OFF_, // Column 6
         // Row 1    Row 2       Row 3       Row 4       Row 5
-        _OFF_,      _OFF_,      _OFF_,      _OFF_,      MOVE // Column 7
+        _OFF_,      _OFF_,      _OFF_,      _OFF_,      ARROW // Column 7
     },
     // Media Layer
     [1] = {

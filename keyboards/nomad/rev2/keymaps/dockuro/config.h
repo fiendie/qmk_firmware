@@ -19,6 +19,9 @@
 #define LSPO_KEYS KC_LSFT, KC_LSFT, KC_8
 #define RSPC_KEYS KC_RSFT, KC_RSFT, KC_9
 
+// auto shift and gui key "led" status
+#define SPLIT_TRANSACTION_IDS_KB KB_LED_SYNC
+
 // caps words
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 #define CAPS_WORD_INVERT_ON_SHIFT
@@ -32,8 +35,7 @@
 // quadratic speed mouse
 #define MOUSEKEY_INERTIA
 
-/*// tap dance
-#define TAPPING_TERM 200
+// tap dance
+#define TAPPING_TERM 125
 #define TAPPING_TERM_PER_KEY
 #define HOLD_ON_OTHER_KEY_PRESS
-*/
