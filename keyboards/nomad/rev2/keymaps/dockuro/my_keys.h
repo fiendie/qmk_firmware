@@ -1,0 +1,8 @@
+
+#define MY_SBRO ALGR(KC_LBRC)
+#define MY_SBRC ALGR(KC_RBRC)
+#define MY_CBRO RSA(KC_LBRC)
+#define MY_CBRC RSA(KC_RBRC)
+#define MY_AT ALGR(KC_SCLN)
+#define MY_HASH ALGR(KC_QUOT)
+#define MY_EUR ALGR(KC_E)

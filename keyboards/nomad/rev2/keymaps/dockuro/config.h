@@ -15,22 +15,27 @@
  */
 #pragma once
 
-#define SPLIT_USB_DETECT
-#define EE_HANDS
-#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500U // Timeout window in ms in which the double tap can occur.
-#define RGB_MATRIX_SLEEP                                // Turn off effects when suspended
-#define SPLIT_TRANSPORT_MIRROR
-#define SPLIT_LAYER_STATE_ENABLE
-#define SPLIT_MODS_ENABLE
-#define SPLIT_OLED_ENABLE
-#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 160
+// space cadet shifts
+#define LSPO_KEYS KC_LSFT, KC_LSFT, KC_8
+#define RSPC_KEYS KC_RSFT, KC_RSFT, KC_9
 
-// Define encoder pins
-#ifndef GP12
-#    define GP12 12U
-#endif
+// auto shift and gui key "led" status
+#define SPLIT_TRANSACTION_IDS_KB KB_LED_SYNC
 
-#ifndef GP13
-#    define GP13 13U
-#endif
+// caps words
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+#define CAPS_WORD_INVERT_ON_SHIFT
 
+// auto shift
+#define AUTO_SHIFT_TIMEOUT 190
+#define AUTO_SHIFT_NO_AUTO_REPEAT
+#define AUTO_SHIFT_MODIFIERS
+#define PERMISSIVE_HOLD
+
+// quadratic speed mouse
+#define MOUSEKEY_INERTIA
+
+// tap dance
+#define TAPPING_TERM 125
+#define TAPPING_TERM_PER_KEY
+#define HOLD_ON_OTHER_KEY_PRESS

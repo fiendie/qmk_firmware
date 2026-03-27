@@ -13,24 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
 
-#define SPLIT_USB_DETECT
-#define EE_HANDS
-#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500U // Timeout window in ms in which the double tap can occur.
-#define RGB_MATRIX_SLEEP                                // Turn off effects when suspended
-#define SPLIT_TRANSPORT_MIRROR
-#define SPLIT_LAYER_STATE_ENABLE
-#define SPLIT_MODS_ENABLE
-#define SPLIT_OLED_ENABLE
-#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 160
-
-// Define encoder pins
-#ifndef GP12
-#    define GP12 12U
-#endif
-
-#ifndef GP13
-#    define GP13 13U
-#endif
+#define LSPO_KEYS KC_LSFT, KC_LSFT, KC_8
+#define RSPC_KEYS KC_RSFT, KC_RSFT, KC_9
 
