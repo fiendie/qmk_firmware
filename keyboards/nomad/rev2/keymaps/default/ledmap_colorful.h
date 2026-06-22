@@ -24,47 +24,47 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     [0] = {
         // Left half
         // Row 1           Row 2         Row 3         Row 4        Row 5
-        MAGENTA,     MAGENTA,   MAGENTA,   MAGENTA,   MAGENTA,     // Column 1 (with thumbs)
+        MAGENTA,     MAGENTA,   MAGENTA,   GREEN,     GREEN,     // Column 1 (with thumbs)
 
         // Row 5           Row 4         Row 3         Row 2        Row 1
-        CYAN,        CYAN,       CYAN,      MAGENTA,                  // Column 2 (4 keys only)
+        CYAN,        CYAN,      CYAN,      MAGENTA,                 // Column 2 (4 keys only)
 
         // Row 1           Row 2         Row 3         Row 4        Row 5
-        MAGENTA,     CYAN,      CYAN,      CYAN,      MAGENTA,     // Column 3
+        MAGENTA,     CYAN,      CYAN,      CYAN,      GREEN,     // Column 3
 
         // Row 5           Row 4         Row 3         Row 2        Row 1
-        MAGENTA,       CYAN,      CYAN,      CYAN,    MAGENTA,     // Column 4
+        GREEN,       CYAN,      CYAN,      CYAN,      MAGENTA,   // Column 4
 
         // Row 1           Row 2         Row 3         Row 4        Row 5
-        MAGENTA,     CYAN,      CYAN,      CYAN,      MAGENTA,     // Column 5
+        MAGENTA,     CYAN,      CYAN,      CYAN,      ORANGE,    // Column 5
 
         // Row 5           Row 4         Row 3         Row 2        Row 1
-        MAGENTA,      CYAN,      CYAN,      CYAN,     MAGENTA,     // Column 6
+        ORANGE,      CYAN,      CYAN,      CYAN,      MAGENTA,   // Column 6
 
         // Row 1           Row 2         Row 3         Row 4        Row 5
-        MAGENTA,     MAGENTA,   MAGENTA,   MAGENTA,   MAGENTA,     // Column 7
+        GREEN,       GREEN,     MAGENTA,   GREEN,     GREEN,     // Column 7
 
         // Right half (mirrored)
         // Row 1           Row 2         Row 3         Row 4        Row 5
-        MAGENTA,     MAGENTA,   MAGENTA,   MAGENTA,   MAGENTA,     // Column 1
+        MAGENTA,     MAGENTA,   MAGENTA,   ORANGE,    GREEN,     // Column 1
 
         // Row 5           Row 4         Row 3         Row 2        Row 1
-        CYAN,        CYAN,      CYAN,      MAGENTA,                   // Column 2
+        CYAN,        CYAN,      CYAN,      MAGENTA,                 // Column 2
 
         // Row 1           Row 2         Row 3         Row 4        Row 5
-        MAGENTA,     CYAN,      CYAN,      CYAN,      MAGENTA,     // Column 3
+        MAGENTA,     CYAN,      CYAN,      CYAN,      GREEN,     // Column 3
 
         // Row 5           Row 4         Row 3         Row 2        Row 1
-        MAGENTA,     MAGENTA,   CYAN,      CYAN,      MAGENTA,     // Column 4
+        GREEN,       MAGENTA,   CYAN,      CYAN,      MAGENTA,   // Column 4
 
         // Row 1           Row 2         Row 3         Row 4        Row 5
-        MAGENTA,     CYAN,      CYAN,      MAGENTA,   MAGENTA,     // Column 5
+        MAGENTA,     CYAN,      CYAN,      MAGENTA,   GREEN,     // Column 5
 
         // Row 5           Row 4         Row 3         Row 2        Row 1
-        MAGENTA,     MAGENTA,   MAGENTA,   CYAN,      MAGENTA,     // Column 6
+        GREEN,       GREEN,     MAGENTA,   CYAN,      MAGENTA,   // Column 6
 
         // Row 1           Row 2         Row 3         Row 4        Row 5
-        MAGENTA,     MAGENTA,   MAGENTA,   MAGENTA,   MAGENTA      // Column 7
+        GREEN,       MAGENTA,   MAGENTA,   GREEN,     GREEN      // Column 7
     },
 
     // Symbol Layer
